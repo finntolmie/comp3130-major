@@ -2,7 +2,7 @@ import { StyleSheet, ImageBackground, Text, View } from "react-native";
 import LoginForm from "../components/LoginForm";
 import React from "react";
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -13,7 +13,7 @@ export default function LoginScreen() {
         <View style={styles.contentWrapper}>
           <Text style={styles.title}>Login to access your Memories</Text>
           <View style={styles.formContainer}>
-            <LoginForm />
+            <LoginForm navigation={navigation} />
           </View>
         </View>
       </ImageBackground>

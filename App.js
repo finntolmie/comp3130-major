@@ -1,16 +1,15 @@
 import React from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import WelcomeScreen from "./screens/WelcomeScreen";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import LogoutButton from "./components/LogoutButton";
-import AccountScreen from "./screens/AccountScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import Navigator from "./navigation/Navigator";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <AccountScreen />
+      <NavigationContainer>
+        <Navigator />
+      </NavigationContainer>
       <StatusBar style="auto"></StatusBar>
     </View>
   );

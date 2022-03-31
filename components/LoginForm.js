@@ -2,12 +2,26 @@ import { StatusBar } from "expo-status-bar";
 import { Formik } from "formik";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomTextInput from "./CustomTextInput";
+import logins from "../logins";
 
-export default function LoginForm() {
+const validateUser = ({ username, password }) => {
+  const result = logins.filter(
+    (login) => login.username === username && login.password === password
+  );
+  return result.length > 0;
+};
+
+export default function LoginForm({ navigation }) {
   return (
     <Formik
       initialValues={{ username: "", password: "" }}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values) => {
+        if (validateUser(values)) {
+          navigation.navigate("AccountScreen");
+        } else {
+          alert("Invalid Login");
+        }
+      }}
     >
       {({ handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
         <>
@@ -45,7 +59,10 @@ export default function LoginForm() {
                 </TouchableOpacity>
               </View>
             </View>
-            <TouchableOpacity style={styles.registerButton}>
+            <TouchableOpacity
+              style={styles.registerButton}
+              onPress={() => navigation.navigate("RegisterScreen")}
+            >
               <Text style={styles.register}>Register</Text>
             </TouchableOpacity>
             <StatusBar style="auto" />

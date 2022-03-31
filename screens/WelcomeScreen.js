@@ -7,7 +7,11 @@ import {
   View,
 } from "react-native";
 
-export default function WelcomeScreen() {
+export default function WelcomeScreen({ navigation }) {
+  const handleSubmit = (event) => {
+    console.log(event.target.value);
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -18,10 +22,16 @@ export default function WelcomeScreen() {
         <View style={styles.contentWrapper}>
           <Text style={styles.title}>Welcome to Memories!</Text>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("LoginScreen")}
+            >
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("RegisterScreen")}
+            >
               <Text style={styles.buttonText}>Register</Text>
             </TouchableOpacity>
           </View>

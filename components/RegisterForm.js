@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomTextInput from "./CustomTextInput";
 
-export default function RegisterForm() {
+export default function RegisterForm({ navigation }) {
   return (
     <Formik
       initialValues={{ username: "", password: "" }}

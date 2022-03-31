@@ -2,17 +2,19 @@ import {
   StyleSheet,
   ScrollView,
   ImageBackground,
+  Image,
+  TouchableOpacity,
   Text,
   View,
 } from "react-native";
-import React from "react";
 import LogoutButton from "../components/LogoutButton";
-import Collection from "../components/Collection";
-import { collections } from "../collections";
+import React from "react";
+import BackButton from "../components/BackButton";
+import DeleteButton from "../components/DeleteButton";
+import EditButton from "../components/EditButton";
 
-const User = "John";
-
-export default function AccountScreen({ navigation }) {
+export default function DetailScreen({ route, navigation }) {
+  const { name, photos } = route.params;
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -22,21 +24,31 @@ export default function AccountScreen({ navigation }) {
       >
         <View style={styles.wrapper}>
           <View style={styles.header}>
+            <View style={styles.back}>
+              <BackButton navigation={navigation} />
+            </View>
             <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>Welcome back, {User}!</Text>
+              <Text style={styles.titleText}>{name}</Text>
             </View>
             <View style={styles.icon}>
               <LogoutButton navigation={navigation} />
             </View>
           </View>
+          <View style={styles.actions}>
+            <DeleteButton style={styles.action} />
+            <EditButton style={styles.action} />
+          </View>
           <ScrollView>
-            <View style={styles.collections}>
-              {collections.map((collection) => (
-                <Collection
-                  key={collection.id}
-                  collection={collection}
-                  navigation={navigation}
-                />
+            <View style={styles.collectionWrapper}>
+              {photos.map((photo) => (
+                <TouchableOpacity
+                  key={photo.id}
+                  onPress={() => {
+                    navigation.navigate("MemoryScreen", { photo });
+                  }}
+                >
+                  <Image source={{ uri: photo.img }} style={styles.img} />
+                </TouchableOpacity>
               ))}
             </View>
           </ScrollView>
@@ -69,6 +81,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  back: {
+    padding: 20,
+  },
   titleContainer: {
     padding: 20,
   },
@@ -78,30 +93,23 @@ const styles = StyleSheet.create({
   icon: {
     padding: 20,
   },
-  collectionWrapper: {
-    height: 120,
-    width: "80%",
-    marginTop: 20,
-    backgroundColor: "rgba(196, 196, 196, 0.2)",
-    alignSelf: "center",
-    borderRadius: 20,
+  actions: {
+    width: "100%",
+    height: 100,
+    alignItems: "center",
+    justifyContent: "space-around",
     flexDirection: "row",
-    justifyContent: "space-between",
   },
-  left: {
-    justifyContent: "space-between",
-  },
-  right: {
+  collectionWrapper: {
+    flex: 1,
+    flexWrap: "wrap",
+    flexDirection: "row",
+    alignContent: "center",
     justifyContent: "center",
-    marginRight: 20,
   },
-  collectionTitle: {
-    padding: 15,
-    fontSize: 24,
-  },
-  collectionDetail: {
-    padding: 15,
-    fontSize: 24,
-    fontStyle: "italic",
+  img: {
+    margin: 20,
+    width: 150,
+    height: 150,
   },
 });
