@@ -3,11 +3,9 @@ import React from "react";
 
 export default function DeleteButton() {
   return (
-    <TouchableOpacity>
-      <View style={styles.container}>
-        <Text style={styles.delete}>Delete</Text>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <Text style={styles.delete}>Delete</Text>
+    </View>
   );
 }
 

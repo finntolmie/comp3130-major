@@ -1,21 +1,87 @@
 import {
+  Alert,
   StyleSheet,
   ScrollView,
   ImageBackground,
   Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  NativeModules,
   View,
 } from "react-native";
-import React from "react";
+import Dialog from "react-native-dialog";
+import React, { useEffect, useState } from "react";
 import LogoutButton from "../components/LogoutButton";
 import Collection from "../components/Collection";
-import { collections } from "../collections";
 import DeleteButton from "../components/DeleteButton";
 import AddButton from "../components/AddButton";
-
-const User = "John";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function AccountScreen({ route, navigation }) {
-  const { username } = route.params;
+  const [deleted, setDeleted] = useState([]);
+  const [deleteState, setDeleteState] = useState(false);
+  const [addState, setAddState] = useState(false);
+  const [newCollection, setNewCollection] = useState("");
+  const [renderKey, setRenderKey] = useState(0);
+  const { user } = route.params;
+  const collections = user.collections;
+
+  //global user variable for all children of AccountScreen
+  global.user = user;
+
+  //This is used to rerender the screen when loaded
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    setRenderKey(Math.random());
+  }, [isFocused]);
+
+  const handleDeleteToggle = () => {
+    setDeleteState(!deleteState);
+  };
+
+  const handleChange = (event) => {
+    setNewCollection(event);
+  };
+
+  //pushes to array and resets states
+  const handleAdd = () => {
+    collections.push({ name: newCollection, photos: [] });
+    setNewCollection("");
+    setAddState(false);
+  };
+
+  //makes sure the two states arent active at the same time
+  const handleAddPress = () => {
+    setAddState(true);
+    setDeleteState(false);
+  };
+
+  const handlePress = (index) => {
+    if (deleteState) {
+      Alert.alert(
+        "Confirm delete",
+        "Are you sure you want to delete this collection?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "OK",
+            onPress: () => {
+              collections.splice(index, 1);
+              setDeleted((curr) => [...curr, collections[index]]);
+            },
+          },
+        ]
+      );
+    } else {
+      navigation.navigate("DetailScreen", {
+        collectionIndex: index,
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -23,27 +89,49 @@ export default function AccountScreen({ route, navigation }) {
         source={require("../assets/images/background.jpg")}
         resizeMode="cover"
       >
+        <View>
+          <Dialog.Container visible={addState}>
+            <Dialog.Title>New Collection</Dialog.Title>
+            <Dialog.Input
+              label="Title"
+              onChangeText={handleChange}
+              onSubmitEditing={(event) => handleAdd(event)}
+            />
+            <Dialog.Button label="Cancel" onPress={() => setAddState(false)} />
+            <Dialog.Button label="Create" onPress={handleAdd} />
+          </Dialog.Container>
+        </View>
         <View style={styles.wrapper}>
           <View style={styles.header}>
             <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>Welcome back, {username}!</Text>
+              <Text style={styles.titleText}>Welcome, {user.username}!</Text>
             </View>
             <View style={styles.icon}>
               <LogoutButton navigation={navigation} />
             </View>
           </View>
           <View style={styles.actions}>
-            <DeleteButton />
-            <AddButton />
+            <TouchableOpacity onPress={handleDeleteToggle}>
+              <DeleteButton />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleAddPress}>
+              <AddButton />
+            </TouchableOpacity>
           </View>
           <ScrollView>
-            <View style={styles.collections}>
-              {collections.map((collection) => (
-                <Collection
-                  key={collection.id}
-                  collection={collection}
-                  navigation={navigation}
-                />
+            <View>
+              {collections.map((collection, i) => (
+                <TouchableOpacity
+                  key={i}
+                  onPress={() => handlePress(i)}
+                  style={
+                    deleteState
+                      ? { backgroundColor: "rgba(196, 0, 0, 0.2)" }
+                      : { backgroundColor: "transparent" }
+                  }
+                >
+                  <Collection collection={collection} />
+                </TouchableOpacity>
               ))}
             </View>
           </ScrollView>
@@ -92,30 +180,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     flexDirection: "row",
   },
-  collectionWrapper: {
+  collectionContainer: {
     height: 120,
     width: "80%",
-    marginTop: 20,
-    backgroundColor: "rgba(196, 196, 196, 0.2)",
-    alignSelf: "center",
-    borderRadius: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  left: {
-    justifyContent: "space-between",
-  },
-  right: {
-    justifyContent: "center",
-    marginRight: 20,
-  },
-  collectionTitle: {
-    padding: 15,
-    fontSize: 24,
-  },
-  collectionDetail: {
-    padding: 15,
-    fontSize: 24,
-    fontStyle: "italic",
+    backgroundColor: "black",
   },
 });

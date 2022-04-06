@@ -2,28 +2,19 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function Collection({ collection, navigation }) {
+export default function Collection({ collection, deleteState }) {
   return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("DetailScreen", {
-          name: collection.name,
-          photos: collection.photos,
-        })
-      }
-    >
-      <View style={styles.collectionWrapper}>
-        <View style={styles.left}>
-          <Text style={styles.collectionTitle}>{collection.name}</Text>
-          <Text style={styles.collectionDetail}>
-            {collection.photos.length} Memories
-          </Text>
-        </View>
-        <View style={styles.right}>
-          <MaterialIcons name="arrow-forward-ios" size={40} color="black" />
-        </View>
+    <View style={styles.collectionWrapper}>
+      <View style={styles.left}>
+        <Text style={styles.collectionTitle}>{collection.name}</Text>
+        <Text style={styles.collectionDetail}>
+          {collection.photos.length} Memories
+        </Text>
       </View>
-    </TouchableOpacity>
+      <View style={styles.right}>
+        <MaterialIcons name="arrow-forward-ios" size={40} color="black" />
+      </View>
+    </View>
   );
 }
 

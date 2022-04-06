@@ -6,10 +6,12 @@ import RegisterScreen from "../screens/RegisterScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import DetailScreen from "../screens/DetailScreen";
 import MemoryScreen from "../screens/MemoryScreen";
+import users from "../data/users";
 
 const Stack = createStackNavigator();
 
 export default function Navigator() {
+  global.users = users;
   return (
     <Stack.Navigator
       initialRouteName="WelcomeScreen"

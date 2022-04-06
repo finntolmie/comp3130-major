@@ -1,6 +1,8 @@
 import {
+  Alert,
   StyleSheet,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   Image,
   Text,
   View,
@@ -11,14 +13,34 @@ import DeleteButton from "../components/DeleteButton";
 import EditButton from "../components/EditButton";
 
 export default function MemoryScreen({ navigation, route }) {
-  const { photo, photos } = route.params;
+  const { collectionIndex, photoIndex } = route.params;
+  const photo = user.collections[collectionIndex].photos[photoIndex];
   const [tapped, setTapped] = useState(true);
   const [clickable, setClickable] = useState(false);
-  const currentPage = photos.indexOf(photo);
 
   const handlePress = () => {
     setTapped(!tapped);
     setClickable(!clickable);
+  };
+
+  const handleDelete = () => {
+    Alert.alert(
+      "Confirm delete",
+      "Are you sure you want to delete this memory?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            user.collections[collectionIndex].photos.splice(photoIndex, 1);
+            navigation.goBack();
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -42,7 +64,7 @@ export default function MemoryScreen({ navigation, route }) {
         <View style={styles.imgContainer}>
           <Image
             source={{
-              uri: "https://a.cdn-hotels.com/gdcs/production33/d1957/3dca8448-04b8-41f7-9484-831ee08e0f53.jpg?impolicy=fcrop&w=800&h=533&q=medium",
+              uri: photo.img,
             }}
             resizeMode="contain"
             style={styles.img}
@@ -52,7 +74,9 @@ export default function MemoryScreen({ navigation, route }) {
       <View style={[styles.bottom, { opacity: tapped ? 0 : 1 }]}>
         <Text style={styles.desc}>{photo.desc}</Text>
         <View style={styles.bottomBar}>
-          <DeleteButton />
+          <TouchableOpacity onPress={handleDelete}>
+            <DeleteButton />
+          </TouchableOpacity>
           <Text style={styles.date}>{photo.date}</Text>
         </View>
       </View>

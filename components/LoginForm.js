@@ -2,13 +2,19 @@ import { StatusBar } from "expo-status-bar";
 import { Formik } from "formik";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomTextInput from "./CustomTextInput";
-import logins from "../logins";
 
 const validateUser = ({ username, password }) => {
-  const result = logins.filter(
-    (login) => login.username === username && login.password === password
+  const result = users.filter(
+    (user) => user.username === username && user.password === password
   );
   return result.length > 0;
+};
+
+const getUser = ({ username, password }) => {
+  const result = users.filter(
+    (user) => user.username === username && user.password === password
+  );
+  return result;
 };
 
 export default function LoginForm({ navigation }) {
@@ -17,8 +23,8 @@ export default function LoginForm({ navigation }) {
       initialValues={{ username: "", password: "" }}
       onSubmit={(values) => {
         if (validateUser(values)) {
-          const username = values.username;
-          navigation.navigate("AccountScreen", { username });
+          const user = getUser(values)[0];
+          navigation.navigate("AccountScreen", { user });
         } else {
           alert("Invalid Login");
         }

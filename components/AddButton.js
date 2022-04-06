@@ -3,11 +3,9 @@ import React from "react";
 
 export default function AddButton() {
   return (
-    <TouchableOpacity>
-      <View style={styles.container}>
-        <Text style={styles.add}>Add</Text>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <Text style={styles.add}>Add</Text>
+    </View>
   );
 }
 

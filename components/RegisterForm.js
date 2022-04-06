@@ -2,12 +2,34 @@ import { StatusBar } from "expo-status-bar";
 import { Formik } from "formik";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomTextInput from "./CustomTextInput";
+import * as Yup from "yup"; //import Yup
+import users from "../data/users";
+
+const schema = Yup.object().shape(
+  //define schema
+  {
+    username: Yup.string().required().min(1).max(16),
+    password: Yup.string().required().min(1).max(16),
+  }
+);
 
 export default function RegisterForm({ navigation }) {
   return (
     <Formik
       initialValues={{ username: "", password: "" }}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values) => {
+        const username = values.username;
+        const id = users.length + 1;
+        values = { ...values, id, collections: [] };
+        if (users.filter((user) => user.username === username).length > 0) {
+          alert("That username already exists.");
+        } else {
+          users.push(values);
+          const newUser = users.filter((user) => user.id === id)[0];
+          navigation.navigate("AccountScreen", { user: newUser });
+        }
+      }}
+      validationSchema={schema}
     >
       {({ handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
         <>

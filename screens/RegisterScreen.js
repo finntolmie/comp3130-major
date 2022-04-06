@@ -13,7 +13,7 @@ export default function RegisterScreen({ navigation }) {
         <View style={styles.contentWrapper}>
           <Text style={styles.title}>Sign up with Memories!</Text>
           <View style={styles.formContainer}>
-            <RegisterForm />
+            <RegisterForm navigation={navigation} />
           </View>
         </View>
       </ImageBackground>

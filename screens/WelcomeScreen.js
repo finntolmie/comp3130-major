@@ -8,10 +8,6 @@ import {
 } from "react-native";
 
 export default function WelcomeScreen({ navigation }) {
-  const handleSubmit = (event) => {
-    console.log(event.target.value);
-  };
-
   return (
     <View style={styles.container}>
       <ImageBackground
