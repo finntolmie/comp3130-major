@@ -11,7 +11,7 @@ import LogoutButton from "../components/LogoutButton";
 import React from "react";
 import BackButton from "../components/BackButton";
 import DeleteButton from "../components/DeleteButton";
-import EditButton from "../components/EditButton";
+import AddButton from "../components/AddButton";
 
 export default function DetailScreen({ route, navigation }) {
   const { name, photos } = route.params;
@@ -35,8 +35,8 @@ export default function DetailScreen({ route, navigation }) {
             </View>
           </View>
           <View style={styles.actions}>
-            <DeleteButton style={styles.action} />
-            <EditButton style={styles.action} />
+            <DeleteButton />
+            <AddButton />
           </View>
           <ScrollView>
             <View style={styles.collectionWrapper}>
@@ -44,7 +44,7 @@ export default function DetailScreen({ route, navigation }) {
                 <TouchableOpacity
                   key={photo.id}
                   onPress={() => {
-                    navigation.navigate("MemoryScreen", { photo });
+                    navigation.navigate("MemoryScreen", { photo, photos });
                   }}
                 >
                   <Image source={{ uri: photo.img }} style={styles.img} />

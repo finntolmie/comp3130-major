@@ -11,9 +11,10 @@ import DeleteButton from "../components/DeleteButton";
 import EditButton from "../components/EditButton";
 
 export default function MemoryScreen({ navigation, route }) {
-  const { photo } = route.params;
+  const { photo, photos } = route.params;
   const [tapped, setTapped] = useState(true);
   const [clickable, setClickable] = useState(false);
+  const currentPage = photos.indexOf(photo);
 
   const handlePress = () => {
     setTapped(!tapped);

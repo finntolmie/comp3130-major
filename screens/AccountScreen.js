@@ -9,10 +9,13 @@ import React from "react";
 import LogoutButton from "../components/LogoutButton";
 import Collection from "../components/Collection";
 import { collections } from "../collections";
+import DeleteButton from "../components/DeleteButton";
+import AddButton from "../components/AddButton";
 
 const User = "John";
 
-export default function AccountScreen({ navigation }) {
+export default function AccountScreen({ route, navigation }) {
+  const { username } = route.params;
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -23,11 +26,15 @@ export default function AccountScreen({ navigation }) {
         <View style={styles.wrapper}>
           <View style={styles.header}>
             <View style={styles.titleContainer}>
-              <Text style={styles.titleText}>Welcome back, {User}!</Text>
+              <Text style={styles.titleText}>Welcome back, {username}!</Text>
             </View>
             <View style={styles.icon}>
               <LogoutButton navigation={navigation} />
             </View>
+          </View>
+          <View style={styles.actions}>
+            <DeleteButton />
+            <AddButton />
           </View>
           <ScrollView>
             <View style={styles.collections}>
@@ -77,6 +84,13 @@ const styles = StyleSheet.create({
   },
   icon: {
     padding: 20,
+  },
+  actions: {
+    width: "100%",
+    height: 100,
+    alignItems: "center",
+    justifyContent: "space-around",
+    flexDirection: "row",
   },
   collectionWrapper: {
     height: 120,

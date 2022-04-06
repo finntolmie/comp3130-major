@@ -17,57 +17,56 @@ export default function LoginForm({ navigation }) {
       initialValues={{ username: "", password: "" }}
       onSubmit={(values) => {
         if (validateUser(values)) {
-          navigation.navigate("AccountScreen");
+          const username = values.username;
+          navigation.navigate("AccountScreen", { username });
         } else {
           alert("Invalid Login");
         }
       }}
     >
       {({ handleChange, handleSubmit, errors, setFieldTouched, touched }) => (
-        <>
-          <View style={styles.container}>
-            <View style={styles.form}>
-              <View style={styles.inputs}>
-                <CustomTextInput
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  placeholder="Username"
-                  onBlur={() => setFieldTouched("username")}
-                  onChangeText={handleChange("username")}
-                />
-                {touched.username && (
-                  <Text style={{ color: "white", fontSize: 10 }}>
-                    {errors.username}
-                  </Text>
-                )}
-                <CustomTextInput
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  placeholder="Password"
-                  secureTextEntry
-                  onBlur={() => setFieldTouched("password")}
-                  onChangeText={handleChange("password")}
-                  style={{ marginBottom: 20 }}
-                />
-                {touched.password && (
-                  <Text style={{ color: "white", fontSize: 10 }}>
-                    {errors.password}
-                  </Text>
-                )}
-                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                  <Text style={styles.login}>Login</Text>
-                </TouchableOpacity>
-              </View>
+        <View style={styles.container}>
+          <View style={styles.form}>
+            <View style={styles.inputs}>
+              <CustomTextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Username"
+                onBlur={() => setFieldTouched("username")}
+                onChangeText={handleChange("username")}
+              />
+              {touched.username && (
+                <Text style={{ color: "white", fontSize: 10 }}>
+                  {errors.username}
+                </Text>
+              )}
+              <CustomTextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Password"
+                secureTextEntry
+                onBlur={() => setFieldTouched("password")}
+                onChangeText={handleChange("password")}
+                style={{ marginBottom: 20 }}
+              />
+              {touched.password && (
+                <Text style={{ color: "white", fontSize: 10 }}>
+                  {errors.password}
+                </Text>
+              )}
+              <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <Text style={styles.login}>Login</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={styles.registerButton}
-              onPress={() => navigation.navigate("RegisterScreen")}
-            >
-              <Text style={styles.register}>Register</Text>
-            </TouchableOpacity>
-            <StatusBar style="auto" />
           </View>
-        </>
+          <TouchableOpacity
+            style={styles.registerButton}
+            onPress={() => navigation.navigate("RegisterScreen")}
+          >
+            <Text style={styles.register}>Register</Text>
+          </TouchableOpacity>
+          <StatusBar style="auto" />
+        </View>
       )}
     </Formik>
   );
